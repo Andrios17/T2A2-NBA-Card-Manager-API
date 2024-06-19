@@ -1,6 +1,7 @@
 from datetime import date
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import Column, Integer, String, Boolean
+from typing import Optional, List
 from init import db, ma
 
 class User(db.Model):
