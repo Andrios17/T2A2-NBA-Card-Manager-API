@@ -37,3 +37,28 @@ def seed_users():
     db.session.add_all(users)
     db.session.commit()
     print('Seeded Users')
+
+@db_commands.cli.command('seed_cards')
+def seed_cards():
+    cards = [
+        Card(
+            first_name='Jalen',
+            last_name='Brunson',
+            team_name='New York Knicks',
+            position='PG',
+            set='Panini Prizm 2023-24',
+            year=2023
+        ),
+        Card(
+            first_name='Lebron',
+            last_name='James',
+            team_name='Los Angleas Lakers',
+            position='SF',
+            set='Panini Prizm 2023-24',
+            year=2023
+        )
+    ]
+
+    db.session.add_all(cards)
+    db.session.commit()
+    print('Seeded Cards')

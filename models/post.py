@@ -2,7 +2,7 @@ from datetime import date
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy import  String, Text, ForeignKey 
 from typing import Optional
-from init import db
+from init import db, ma
 
 class Post(db.Model):
     __tablename__ = 'posts'
@@ -14,3 +14,7 @@ class Post(db.Model):
     date_posted: Mapped[date]
 
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
+
+class PostSchema(ma.Schema):
+    class Meta:
+        fields = ('id', 'title', 'description', 'date_posted', 'user_id')
