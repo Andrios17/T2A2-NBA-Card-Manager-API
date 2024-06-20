@@ -15,7 +15,7 @@ def get_all_pc():
     stmt = db.select(PersonalCollection).where(PersonalCollection.user_id == identity)
     collection = db.session.scalars(stmt).all()
     if collection:
-        return PersonalCollectionSchema(many=True, exclude=['id', 'user_id']).dump(collection), 201
+        return PersonalCollectionSchema(many=True, exclude=['card_id', 'user_id']).dump(collection), 201
     else:
         return {'message': 'You do not have any cards in your collection'}, 200
 
@@ -50,6 +50,16 @@ def create_pc():
 def update_pc():
     pass
 
+
+#Work on this more, change personal collection id to something more semantic
 @pc_bp.route('/<int:id>', methods=['DELETE'])
+@jwt_required()
 def delete_pc(id):
-    pass
+    pc = db.get_or_404(PersonalCollection, id)
+    identity = get_jwt_identity()
+    if pc.user_id == identity:
+        db.session.delete(pc)
+        db.session.commit()
+        return {'message': 'Card deleted'}, 200
+    else:
+        return {'message': 'Unauthorized'}, 401
