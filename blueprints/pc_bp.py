@@ -14,11 +14,20 @@ def get_all_pc():
     identity = get_jwt_identity()
     stmt = db.select(PersonalCollection).where(PersonalCollection.user_id == identity)
     collection = db.session.scalars(stmt).all()
-    return PersonalCollectionSchema(many=True, exclude=['id', 'user_id']).dump(collection), 201
+    if collection:
+        return PersonalCollectionSchema(many=True, exclude=['id', 'user_id']).dump(collection), 201
+    else:
+        return {'message': 'You do not have any cards in your collection'}, 200
 
-@pc_bp.route('/<int:id>', methods=['GET'])
-def get_pc(id):
-    pass
+@pc_bp.route('/<int:user_id>', methods=['GET'])
+@jwt_required()
+def get_pc(user_id):
+    stmt = db.select(PersonalCollection).where(PersonalCollection.user_id == user_id)
+    collection = db.session.scalars(stmt).all()
+    if collection != []:
+        return PersonalCollectionSchema(many=True, exclude=['id', 'user_id']).dump(collection), 201
+    else:
+        return {'message': 'This user does not have any cards in their collection'}, 404
 
 @pc_bp.route('/', methods=['POST'])
 @jwt_required()
