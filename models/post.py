@@ -17,9 +17,7 @@ class Post(db.Model):
 
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
     user_username: Mapped[str] = mapped_column(ForeignKey('users.username'))
-    # user: Mapped["User"] = relationship(backref="posts")
 
 class PostSchema(ma.Schema):
-    # user = fields.Nested('UserSchema', exclude=['email', 'password', 'first_name', 'last_name', 'is_admin'] )
     class Meta:
         fields = ('id', 'title', 'description', 'date_posted','user_id', 'user_username')

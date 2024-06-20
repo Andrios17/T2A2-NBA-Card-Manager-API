@@ -1,7 +1,8 @@
 from datetime import date
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import Column, Integer, String
 from init import db, ma
+from typing import Optional, List
 
 
 class Card(db.Model):
@@ -15,6 +16,8 @@ class Card(db.Model):
     position: Mapped[str] = mapped_column(String(3))
     set: Mapped[str] = mapped_column(String(100))
     year: Mapped[int] = mapped_column(Integer())
+
+    personal_collections = relationship('PersonalCollection', back_populates='card')
 
 
 class CardSchema(ma.Schema):
