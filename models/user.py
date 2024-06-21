@@ -16,6 +16,8 @@ class User(db.Model):
     last_name: Mapped[str] = mapped_column(String(100))
     is_admin: Mapped[bool] = mapped_column(Boolean, default=False)
 
+    comments = relationship('Comment', back_populates='user')
+
 class UserSchema(ma.Schema):
     class Meta:
         fields = ('id', 'username', 'email', 'password', 'first_name', 'last_name', 'is_admin')

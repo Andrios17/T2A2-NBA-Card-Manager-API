@@ -1,8 +1,10 @@
+from datetime import date
 from flask import Blueprint
 from models.card import Card
 from models.user import User
 from models.post import Post
 from models.pc import PersonalCollection
+from models.comment import Comment
 from init import db, bcrypt
 
 db_commands = Blueprint('db', __name__)
@@ -19,7 +21,7 @@ def seed_users():
         User(
             username='Administrator',
             email='admin@fake.com',
-            password= bcrypt.generate_password_hash("Knicks123").decode('utf8'),
+            password= bcrypt.generate_password_hash("/10").decode('utf8'),
             first_name='Head',
             last_name='Admin',
             is_admin=True,
@@ -62,3 +64,47 @@ def seed_cards():
     db.session.add_all(cards)
     db.session.commit()
     print('Seeded Cards')
+
+@db_commands.cli.command('seed_posts')
+def seed_posts():
+    posts = [
+        Post(
+            title='First Post',
+            description='This is my first post',
+            date_posted=date.today(),
+            user_id=1,
+            user_username='Administrator'
+        ),
+        Post(
+            title='Second Post',
+            description='This is my second post',
+            date_posted=date.today(),
+            user_id=2,
+            user_username='User'
+        )
+    ]
+
+    db.session.add_all(posts)
+    db.session.commit()
+    print('Seeded Posts')
+
+@db_commands.cli.command('seed_comments')
+def seed_comments():
+    comments = [
+        Comment(
+        message='This is a comment',
+        date_posted=date.today(),
+        post_id=1,
+        user_id=1
+        ),
+    Comment(
+        message='This is another comment',
+        date_posted=date.today(),
+        post_id=1,
+        user_id=2
+        )
+    ]
+
+    db.session.add_all(comments)
+    db.session.commit()
+    print('Seeded Comments')

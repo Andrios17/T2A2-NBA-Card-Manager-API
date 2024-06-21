@@ -1,7 +1,7 @@
 from datetime import date
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 # from models.user import User, UserSchema
-from sqlalchemy import  String, Text, ForeignKey 
+from sqlalchemy import  String, Text, ForeignKey
 from typing import Optional
 from init import db, ma
 from marshmallow import fields
@@ -18,6 +18,9 @@ class Post(db.Model):
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
     user_username: Mapped[str] = mapped_column(ForeignKey('users.username'))
 
+    comments = db.relationship('Comment', back_populates='post')
+
 class PostSchema(ma.Schema):
+    comments=fields.List(fields.Nested("CommentSchema"))
     class Meta:
-        fields = ('id', 'title', 'description', 'date_posted','user_id', 'user_username')
+        fields = ('id', 'title', 'description', 'date_posted','user_id', 'user_username', 'comments')
