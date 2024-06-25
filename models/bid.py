@@ -20,6 +20,6 @@ class Bid(db.Model):
 
 class BidSchema(ma.Schema):
     user = fields.Nested('UserSchema')
-    auction = fields.Nested('AuctionSchema')
+    auction = fields.Nested('AuctionSchema', only=('start_date', 'end_date', 'start_price', ))
     class Meta:
-        fields = ('id', 'price', 'date', 'user_id', 'auction_id')
+        fields = ('id', 'price', 'date', 'user_id', 'auction_id', 'auction')

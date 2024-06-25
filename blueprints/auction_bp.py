@@ -20,7 +20,10 @@ def get_all_auctions():
 def get_auction(id):
     stmt = db.select(Auction).where(Auction.id == id)
     auction = db.session.scalar(stmt)
-    return AuctionSchema().dump(auction), 200
+    if auction:
+        return AuctionSchema().dump(auction), 200
+    else:
+        return {'message': 'Auction does not exist'}, 404
 
 @auction_bp.route('/card/<int:id>', methods=['GET'])
 def get_all_auctions_on_one_card(id):
@@ -32,7 +35,7 @@ def get_all_auctions_on_one_card(id):
 @jwt_required()
 def create_auction():
     identity = get_jwt_identity()
-    params = AuctionSchema(only=['start_date', 'end_date', 'start_price', 'card_id']).load(request.json, unknown='exclude')
+    params = AuctionSchema(only=['end_date', 'start_price', 'card_id']).load(request.json, unknown='exclude')
     stmt = db.select(PersonalCollection).where(and_(PersonalCollection.id == identity, PersonalCollection.card_id == params['card_id']))
     pc = db.session.scalar(stmt)
     if pc:
@@ -88,3 +91,47 @@ def delete_auction(id):
             return {'message': 'Auction deleted'}, 200
     else:
         return {'message': 'Unauthorized or auction does not exist'}, 401
+
+@auction_bp.route('/bid/<int:id>', methods=['POST'])
+@jwt_required()
+def create_bid(id):
+    auction = db.get_or_404(Auction, id)
+    identity = get_jwt_identity()
+    if identity != auction.user_id:
+        params = BidSchema(only=['price']).load(request.json, unknown='exclude')
+        bid = Bid(
+            date = date.today(),
+            price = params['price'],
+            user_id = identity,
+            auction_id = auction.id
+        )
+        db.session.add(bid)
+        db.session.commit()
+        return BidSchema().dump(bid), 201
+    else:
+        return {'message': 'Unauthorized'}, 401
+
+@auction_bp.route('/bid/<int:id>', methods=['PUT', 'PATCH'])
+@jwt_required()
+def update_bid(id):
+    bid = db.get_or_404(Bid, id)
+    identity = get_jwt_identity()
+    if identity == bid.user_id:
+        params = BidSchema(only=['price']).load(request.json, unknown='exclude')
+        bid.price = params.get('price', bid.price)
+        db.session.commit()
+        return BidSchema().dump(bid), 200
+    else:
+        return {'message': 'Unauthorized'}, 401
+
+@auction_bp.route('/bid/<int:id>', methods=['DELETE'])
+@jwt_required()
+def delete_bid(id):
+    bid = db.get_or_404(Bid, id)
+    identity = get_jwt_identity()
+    if identity == bid.user_id:
+        db.session.delete(bid)
+        db.session.commit()
+        return {'message': 'Bid deleted'}, 200
+    else:
+        return {'message': 'Unauthorized'}, 401
