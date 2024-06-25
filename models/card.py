@@ -18,6 +18,7 @@ class Card(db.Model):
     year: Mapped[int] = mapped_column(Integer())
 
     personal_collections = relationship('PersonalCollection', back_populates='card')
+    auction = relationship('Auction', back_populates='card')
 
 
 class CardSchema(ma.Schema):

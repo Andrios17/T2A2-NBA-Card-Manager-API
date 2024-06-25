@@ -16,8 +16,8 @@ class Comment(db.Model):
     post_id: Mapped[int] = mapped_column(ForeignKey('posts.id'))
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
 
-    user = db.relationship('User', back_populates='comments')
-    post = db.relationship('Post', back_populates='comments')
+    user = db.relationship('User', back_populates='comment')
+    post = db.relationship('Post', back_populates='comment')
 
 class CommentSchema(ma.Schema):
     user = fields.Nested('UserSchema', only=('username',))

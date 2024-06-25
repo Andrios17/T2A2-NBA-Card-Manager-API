@@ -16,7 +16,9 @@ class User(db.Model):
     last_name: Mapped[str] = mapped_column(String(100))
     is_admin: Mapped[bool] = mapped_column(Boolean, default=False)
 
-    comments = relationship('Comment', back_populates='user')
+    comment = db.relationship('Comment', back_populates='user')
+    auction = db.relationship('Auction', back_populates='user')
+    bid = db.relationship('Bid', back_populates='user')
 
 class UserSchema(ma.Schema):
     class Meta:

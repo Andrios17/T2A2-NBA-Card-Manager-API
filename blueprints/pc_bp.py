@@ -60,6 +60,6 @@ def delete_pc(id):
     if pc.user_id == identity:
         db.session.delete(pc)
         db.session.commit()
-        return {'message': 'Card deleted'}, 200
+        return {'message': 'Card deleted from collection'}, 200
     else:
         return {'message': 'Unauthorized'}, 401

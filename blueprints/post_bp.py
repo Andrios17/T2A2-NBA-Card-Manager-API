@@ -9,17 +9,20 @@ from sqlalchemy import and_
 
 posts_bp = Blueprint('posts', __name__, url_prefix='/posts')
 
+# Read all posts with their comments
 @posts_bp.route('/', methods=['GET'])
 def get_all_posts():
     stmt = db.select(Post)
     posts = db.session.scalars(stmt).all()
     return PostSchema(many=True).dump(posts), 200
 
+# Get a post with its comments
 @posts_bp.route('/<int:id>', methods=['GET'])
 def get_post(id):
     post = db.session.query(Post).get(id)
     return PostSchema().dump(post), 200
 
+# Create a new post
 @posts_bp.route('/', methods=['POST'])
 @jwt_required()
 def create_post():
@@ -38,6 +41,7 @@ def create_post():
     db.session.commit()
     return PostSchema().dump(post), 201
 
+# Update a post
 @posts_bp.route('/<int:id>', methods=['PUT', 'PATCH'])
 @jwt_required()
 def update_post(id):
@@ -52,6 +56,7 @@ def update_post(id):
         return {'message': 'Unauthorized'}, 401
     
 
+# Delete a post
 @posts_bp.route('/<int:id>', methods=['DELETE'])
 @jwt_required()
 def delete_post(id):
@@ -63,6 +68,7 @@ def delete_post(id):
     else:
         return {'message': 'Unauthorized'}, 401
 
+# Create a comment
 @posts_bp.route('/comments/<int:id>', methods=['POST'])
 @jwt_required()
 def create_comment(id):
@@ -85,6 +91,7 @@ def create_comment(id):
     else:
         return {'message': 'Unauthorized or post does not exist'}, 401
 
+# Update a comment
 @posts_bp.route('/comments/<int:id>/<int:comment>', methods=['PUT', 'PATCH'])
 @jwt_required()
 def update_comment(id, comment):
@@ -100,6 +107,7 @@ def update_comment(id, comment):
     else:
         return {'message': 'Unauthorized or comment does not exist'}, 401
 
+# Delete a comment
 @posts_bp.route('/comments/<int:id>/<int:comment>', methods=['DELETE'])
 @jwt_required()
 def delete_comment(id, comment):
