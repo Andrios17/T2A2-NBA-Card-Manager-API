@@ -15,3 +15,16 @@ def admin_only(fn):
         else:
             return {'error': 'Not Authorized, Must be an admin'}, 403
     return inner
+
+def admin_only_search(fn):
+    @wraps(fn)
+    @jwt_required()
+    def inner(id):
+        user_id = get_jwt_identity()
+        stmt = db.select(User).where(User.id == user_id, User.is_admin)
+        user = db.session.scalar(stmt)
+        if(user):
+            return fn(id)
+        else:
+            return {'error': 'Not Authorized, Must be an admin'}, 403
+    return inner

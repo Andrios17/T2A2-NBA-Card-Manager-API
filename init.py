@@ -11,6 +11,8 @@ class Base(DeclarativeBase):
 
 app = Flask(__name__)
 
+app.json.sort_keys = False
+
 app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('SQLALCHEMY_DATABASE_URI')
 
 app.config['JWT_SECRET_KEY'] = environ.get('JWT_SECRET_KEY')

@@ -4,7 +4,7 @@ from models.user import User, UserSchema
 from flask_jwt_extended import create_access_token
 from sqlalchemy import or_
 from init import db, bcrypt
-from auth import admin_only
+from auth import admin_only, admin_only_search
 
 
 users_bp = Blueprint('users', __name__, url_prefix='/users')
@@ -47,13 +47,13 @@ def get_all_users():
     return UserSchema(many=True).dump(users), 200
 
 @users_bp.route('/<int:id>', methods=['GET'])
-@admin_only
+@admin_only_search
 def get_user(id):
     user = db.get_or_404(User, id)
     return UserSchema().dump(user), 200
 
 @users_bp.route('/edit/<int:id>', methods=['PATCH'])
-@admin_only
+@admin_only_search
 def edit_user(id):
     user = db.get_or_404(User, id)
     params = UserSchema(only=['email', 'password', 'username', 'first_name', 'last_name', 'is_admin']).load(request.json, unknown='exclude')
@@ -67,7 +67,7 @@ def edit_user(id):
     return UserSchema().dump(user), 200
 
 @users_bp.route('/delete/<int:id>', methods=['DELETE'])
-@admin_only
+@admin_only_search
 def delete_user(id):
     user = db.get_or_404(User, id)
     db.session.delete(user)

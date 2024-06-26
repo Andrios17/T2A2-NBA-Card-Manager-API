@@ -1,7 +1,7 @@
 from flask import Blueprint,request
 from init import db, ma
 from models.card import Card, CardSchema
-from auth import admin_only
+from auth import admin_only, admin_only_search
 
 card_bp = Blueprint('card', __name__, url_prefix='/cards')
 
@@ -32,7 +32,7 @@ def create_card():
     return CardSchema().dump(card), 201
 
 @card_bp.route('/', methods=['PUT', 'PATCH'])
-@admin_only
+@admin_only_search
 def update_card():
     params = CardSchema().load(request.json, unknown='exclude')
     card = db.session.query(Card).get(params['id'])
@@ -46,7 +46,7 @@ def update_card():
     return CardSchema().dump(card), 200
 
 @card_bp.route('/<int:id>', methods=['DELETE'])
-@admin_only
+@admin_only_search
 def delete_card(id):
     card = db.session.query(Card).get(id)
     db.session.delete(card)

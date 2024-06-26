@@ -61,10 +61,15 @@ def update_post(id):
 @jwt_required()
 def delete_post(id):
     post = db.session.query(Post).get(id)
+    stmt = db.select(Comment).where(Comment.post_id == id)
+    comments = db.session.scalars(stmt).all()
     if post.user_id == get_jwt_identity():
+        for comment in comments:
+            db.session.delete(comment)
+            db.session.commit()
         db.session.delete(post)
         db.session.commit()
-        return {'message': 'Post deleted'}, 200
+        return {'message': 'Post deleted and all associated comments (if any) deleted'}, 200
     else:
         return {'message': 'Unauthorized'}, 401
 

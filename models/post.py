@@ -21,6 +21,7 @@ class Post(db.Model):
     comment = db.relationship('Comment', back_populates='post')
 
 class PostSchema(ma.Schema):
-    comments=fields.List(fields.Nested("CommentSchema"))
+    comment=fields.List(fields.Nested("CommentSchema"))
     class Meta:
-        fields = ('id', 'title', 'description', 'date_posted','user_id', 'user_username', 'comments')
+        ordered = True
+        fields = ('id', 'title', 'description', 'date_posted','user_id', 'user_username', 'comment')
