@@ -14,6 +14,5 @@ app.register_blueprint(posts_bp)
 app.register_blueprint(pc_bp)
 app.register_blueprint(auction_bp)
 
-
 if __name__ == '__main__':
     app.run(debug=True)
