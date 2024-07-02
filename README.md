@@ -98,4 +98,105 @@ A culmination of the past three code example can be examplified below:
 
 ![Card Table](docs/card_table.png)
 
-As you can see, the cards table has been created utilising the class model as the schema for the table. The instances of that class which were created and added to the database are also found and located within the classes table. As such, this processes examplifies how the utilisation of SQLAlchemy has assisted the faciliation of web applications in Flask. 
+As you can see, the cards table has been created utilising the class model as the schema for the table. The instances of that class which were created and added to the database are also found and located within the classes table. As such, this processes examplifies how the utilisation of SQLAlchemy has assisted the faciliation of web applications in Flask.
+
+## R6 - ERD Model of Database and description of how models have aided the database design
+
+![ERD of Database](docs/ERD.png)
+
+The above is the entity relationship diagram that was created priot to any code being completed for thos API. This API consists of 7 different tables which include Users, Posts, Comments, Cards, Personal_Collections, Auctions and Bids. Each of these tables have some sort of relationship with other tables throughout the database. The table with the most relationships with other tables is the User tables. This is done with a specific purpose. The purpose of this app is to faciliate user communication between different users in the NBA card hobby, and every feature implemented is user centric. As such, all tables besides the Cards table form a relationship to the users table. Going from users to other tables, there is a zero or many relationship relationship as users can have multiple instances of every type of instance in the outgoing tables. For example, a user can have zero or many posts, bids, auctions, comments, auctions and/or instances of personal_collections within the database. However, going back to the users table, there is a one and only one relationship as each of these instances can only have one user attached to each instance.
+
+Utilising the users table as the foundation of the database is key for the optimal performance of the application and is needed for the application to effectively operate.
+
+__Below is a table which expresses the relationships which are found in the database:__
+
+### Relationships of the database
+
+__Table One__ | __Relationship__| __Table Two__
+--- | --- | --- |
+Users | Zero or Many | Posts
+Posts | One and only one | Users
+Users | Zero or Many | Auctions
+Auctions | One and only one  | Users
+Users | Zero or Many | Bids
+Bids | One and only one| Users
+Users | Zero or Many | Comments
+Comments | One and only one | Users
+Users | Zero or Many | Personal_Collection
+Personal_Collection | One and only one| Users
+Auctions | Zero or Many | Bids
+Bids | One and only one | Auctions
+Cards | Zero or Many | Personal_Collection
+Personal_Collection | One and only one | Cards
+Comments | Zero or Many | Posts
+Posts | One and only one | Comments
+
+As you can see the relationships in this database are quite complex with most of the relationshis relating from one table to the users table. However, there are other key relationships where it would be reasonable to assume a relationship in a real circumstances. This occurs in both the Auctions to Bids table and the Posts to Comments table. The type of relationships which are present are a zero to many from the hierachy table (Posts, Auctions) to the lower tables (Comments, Bids). There is a one and only relationship in return on these tables. 
+
+Furthermore, all tables within the database are normalised, meaning that each table is utilised to represent one kind of data input and there is no overlap between tables and entities which are entered into the table are not entirely dependent on the primary key. The need for normalisation is extremely important as it aids in reducing reduncy of data inputs, improvment of daya integrity as well as enhanced query performance. All tables conform the third normal form of normalisation and are open to the advantages that this brings. Below is an explanation of how the Personal_Collection table may look in all forms of normalisation. 
+
+### Personal_Collection Table
+
+### First Normal Form
+
+#### Personal Collections
+
+__ID__ | __Player Name__| __Set__| __Year__ | __Username__|
+--- | --- | --- |--- | --- |
+1|Lebron James|Panini Prizm|2024|Andrios17
+2|Lebron James|National Treasures|2003|Andrios17
+3|Jalen Brunson|Panini Prizm|2020|Hello123
+4|Mikal Bridges|NBA Hoops|2023|Andrios17
+
+This table conforms to the first normal form as each attribute is atomic and contains only single value per row. On top of this, each row is unique and idenifble by the primary key. However, as you can see there is overlap of information that should belong in different tables and it can be broken down further in more tables to avoid data reduency and improve data integrity.
+
+### Second Normal Form
+
+#### Personal Collections 
+
+__ID__ | __Player Name__| __Set__| __Year__ |__User_id__|
+--- | --- | --- |--- |--- |
+1|Lebron James|Panini Prizm|2024| 1
+2|Lebron James|National Treasures|2003| 1
+3|Jalen Brunson|Panini Prizm|2020| 2
+4|Mikal Bridges|NBA Hoops| 2023 | 1
+
+#### Users
+
+__ID__ | __User Name__|
+--- | --- |
+1| Andrios17
+2| Hello 123
+
+This table conforms to the second normal form as it follows the same structure as the first normal form, however, in this instance there a removal of data that there are applicable in multiple rows and are instead placed in a different table. In this instance, this is the user name attribute which has now been placed in a different table. The username attribute which was in place previously has now been moved to a different table and a relationship is created between the two tables through the creation of a foreign key in the personal collections table which references the users table. However, this can be improved upon further to improve performance and improve the normalisation process.
+
+### Third Normal Form
+
+#### Personal Collections 
+
+__ID__ | __User Id__| __Card ID__|
+--- | --- | --- |
+1|1|1
+2|1|2
+3|2|3
+4|1|4
+
+#### Cards
+
+__ID__ | __First Name__| __Last Name__| __Set__ |__Team Name__|__Position__|__Year__|
+--- | --- | --- |--- |--- |--- |--- |
+1|Lebron|James|Panini Prizm|Los Angleas Lakers|SF|2024
+2|Lebron|James|National Treasures|Cleveland Cavaliers|SF|2023
+3|Jalen|Brunson|Panini Prizm|New York Knicks|PG|2024
+4|Mikal|Bridges|NBA Hoops|Pehnoix Suns|SG|2023
+
+#### Users
+
+__ID__ | __First Name__| __Last Name__| __User Name__ |__Email__|__Password__|__Is_Admin__|
+--- | --- | --- |--- |--- |--- |--- |
+1|Alexander|Andriopoulos|Andrios17|alexander.andriopoulos@gmail.com|#@$%^@@^|T
+2|John|Smith|Hello123|John.Smith@hotmail.com|!@#$$^&*%&|F
+
+All tables now conform to the third normal form of data normalisation. All entities which relate to a specific kind of data are now found in each of their own tables and there is no overlap of data found in the personal collections table. Relationships which are formed between the other two tables in the personal collections table are only established by calling upon the primary keys of other tables in the database. Columns which are not dependent on the primary keys have been removed. Through the creation of these new tables, it allows for more attributes to be added which are semenatically key and relevent to that table. For example, users table has been expanded upon to include information which is extremely relevent. This table can now be utilised to create relationships with other tables in the database which rely upon users. The personal collection table has been shrunk to only include the primary key identifier along with foregein keys which link the tables to relevent data. Search query optimsation is now extremely efficient as a user can query the personal collection table to effectively find all entries which correlate to the users appropiratly. 
+
+Following this practice removes the need for dependencies on data sanisation and interpretation as queries can be utilised to effectively view all data associated with the personal collections table, thus the creation of an effective and effcient database can be implemented. 

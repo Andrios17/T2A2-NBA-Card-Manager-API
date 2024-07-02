@@ -5,7 +5,7 @@ from models.bid import Bid, BidSchema
 from models.pc import PersonalCollection
 from models.card import Card, CardSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity
-from init import db, ma
+from init import db
 from sqlalchemy import and_
 
 auction_bp = Blueprint('auction', __name__, url_prefix='/auction')
