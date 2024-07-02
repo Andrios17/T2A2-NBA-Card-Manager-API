@@ -16,13 +16,14 @@ class Post(db.Model):
     date_posted: Mapped[date]
 
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
-    user_username: Mapped[str] = mapped_column(ForeignKey('users.username'))
 
     comment = db.relationship('Comment', back_populates='post')
+    user = db.relationship('User', back_populates='post')
 
 class PostSchema(ma.Schema):
 
     comment=fields.List(fields.Nested("CommentSchema"))
+    user= fields.Nested('UserSchema', only= ('username',))
 
     title=fields.String(required=True, validate=And(
         Regexp('^[0-9a-zA-Z ]+$', error='Title must only contain alphanumeric characters'),
@@ -32,4 +33,4 @@ class PostSchema(ma.Schema):
 
     class Meta:
         ordered = True
-        fields = ('id', 'title', 'description', 'date_posted','user_id', 'user_username', 'comment')
+        fields = ('id', 'user', 'title', 'description', 'date_posted','comment')

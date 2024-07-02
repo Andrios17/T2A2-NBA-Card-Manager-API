@@ -21,9 +21,11 @@ class User(db.Model):
     comment = db.relationship('Comment', back_populates='user')
     auction = db.relationship('Auction', back_populates='user')
     bid = db.relationship('Bid', back_populates='user')
+    post = db.relationship('Post', back_populates='user')
+    personal_collections = db.relationship('PersonalCollection', back_populates='user')
 
 class UserSchema(ma.Schema):
-    
+
     email = fields.Email(required=True)
     password = fields.String(required=True, validate=Length(min=10, error='Password must be at least 10 characters'))
     username = fields.String(required=True, validate=And(

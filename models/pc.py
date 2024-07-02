@@ -12,6 +12,7 @@ class PersonalCollection(db.Model):
     card_id: Mapped[int] = mapped_column(ForeignKey('cards.id'))
 
     card = relationship('Card', back_populates="personal_collections")
+    user = relationship('User', back_populates='personal_collections')
 
 class PersonalCollectionSchema(ma.Schema):    
     card = fields.Nested('CardSchema')
