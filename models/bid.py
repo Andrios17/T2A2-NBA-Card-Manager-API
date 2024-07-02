@@ -3,6 +3,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import Column, Integer, String, ForeignKey
 from init import db, ma
 from marshmallow import fields
+from marshmallow.validate import Regexp
 
 class Bid(db.Model):
     __tablename__ = 'bids'
@@ -19,7 +20,10 @@ class Bid(db.Model):
 
 
 class BidSchema(ma.Schema):
-    user = fields.Nested('UserSchema')
-    auction = fields.Nested('AuctionSchema', only=('start_date', 'end_date', 'start_price', ))
+    price = fields.Int(validate=(Regexp('^[0-9]+$', error='Invalid, Price must be a whole number')))
+
+    user = fields.Nested('UserSchema', only=('username',))
+    auction = fields.Nested('AuctionSchema', only=('start_date', 'end_date', 'start_price'))
+
     class Meta:
-        fields = ('id', 'price', 'date', 'user_id', 'auction_id', 'auction')
+        fields = ('id', 'price', 'date', 'user_id', 'auction_id', 'user')

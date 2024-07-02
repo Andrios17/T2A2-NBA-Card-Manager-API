@@ -1,6 +1,7 @@
 from datetime import date
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import Column, Integer, String, ForeignKey
+from marshmallow.validate import Regexp
 from init import db, ma
 from marshmallow import fields
 
@@ -21,8 +22,12 @@ class Auction(db.Model):
 
 
 class AuctionSchema(ma.Schema):
+    end_date = fields.Date(required=True, format="%Y-%m-%d")
+    start_price = fields.Int(validate=(Regexp('^[0-9]+$', error='Invalid, Starting_Price must be a whole number')))
+
     user = fields.Nested('UserSchema', only=('username', 'id'))
     card = fields.Nested('CardSchema', only=('first_name', 'last_name', 'set', 'year', 'team_name'))
     bid = fields.List(fields.Nested('BidSchema', exclude=('auction_id',)))
+
     class Meta:
-        fields = ('id', 'start_date', 'end_date', 'start_price', 'card_id', 'user', 'bid', 'card')
+        fields = ('id', 'card', 'start_date', 'end_date', 'start_price', 'card_id', 'user', 'bid')

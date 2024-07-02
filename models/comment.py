@@ -1,10 +1,10 @@
 from datetime import date
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-# from models.user import User, UserSchema
 from sqlalchemy import  String, Text, ForeignKey 
 from typing import Optional
 from init import db, ma
 from marshmallow import fields
+from marshmallow.validate import Length
 
 class Comment(db.Model):
     __tablename__ = 'comments'
@@ -21,6 +21,8 @@ class Comment(db.Model):
 
 class CommentSchema(ma.Schema):
     user = fields.Nested('UserSchema', only=('username',))
+
+    message=fields.String(required=True, validate=Length(max=32000, error='Message must be less than 32,000 characters'))
 
     class Meta:
         fields = ('id', 'message', 'date_posted', 'user')

@@ -1,6 +1,8 @@
 from datetime import date
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import Column, Integer, String, Boolean
+from marshmallow.validate import Length, Regexp, And
+from marshmallow import fields
 from typing import Optional, List
 from init import db, ma
 
@@ -21,5 +23,16 @@ class User(db.Model):
     bid = db.relationship('Bid', back_populates='user')
 
 class UserSchema(ma.Schema):
+    
+    email = fields.Email(required=True)
+    password = fields.String(required=True, validate=Length(min=10, error='Password must be at least 10 characters'))
+    username = fields.String(required=True, validate=And(
+        Length(max=38, error='Username cannot be longer than 38 characters'),
+        Regexp('^[a-zA-Z0-9]+$', error='Username can only contain letters and numbers')
+    ))
+    first_name = fields.String(required=True)
+    last_name = fields.String(required=True)
+    is_admin = fields.Boolean(default=False)
+
     class Meta:
         fields = ('id', 'username', 'email', 'password', 'first_name', 'last_name', 'is_admin')

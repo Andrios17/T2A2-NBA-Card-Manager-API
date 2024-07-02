@@ -5,6 +5,8 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from models.card import Card, CardSchema
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine, and_
+from sqlalchemy.exc import DataError
+from auth import admin_or_owner
 
 pc_bp = Blueprint('pc', __name__, url_prefix='/personal_collection')
 
@@ -21,7 +23,7 @@ def get_all_pc():
 
 @pc_bp.route('/<int:user_id>', methods=['GET'])
 @jwt_required()
-def get_pc(user_id):
+def get_pc_of_user(user_id):
     stmt = db.select(PersonalCollection).where(PersonalCollection.user_id == user_id)
     collection = db.session.scalars(stmt).all()
     if collection != []:
@@ -46,20 +48,15 @@ def create_pc():
     else:
         return {'message': 'Card does not exit'}, 404
 
-@pc_bp.route('/', methods=['PUT', 'PATCH'])
-def update_pc():
-    pass
-
-
-#Work on this more, change personal collection id to something more semantic
 @pc_bp.route('/<int:id>', methods=['DELETE'])
 @jwt_required()
 def delete_pc(id):
     pc = db.get_or_404(PersonalCollection, id)
-    identity = get_jwt_identity()
-    if pc.user_id == identity:
-        db.session.delete(pc)
-        db.session.commit()
-        return {'message': 'Card deleted from collection'}, 200
-    else:
-        return {'message': 'Unauthorized'}, 401
+    admin_or_owner(pc)
+    db.session.delete(pc)
+    db.session.commit()
+    return {'message': 'Card deleted from collection'}, 200
+
+@pc_bp.errorhandler(DataError)
+def ints_only(err):
+    return {'error': 'please ensure you using ints when entering card_id'}, 404

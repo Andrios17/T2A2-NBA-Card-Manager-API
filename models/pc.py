@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy import ForeignKey
 from init import db, ma
-from marshmallow import fields
+from marshmallow import fields, validate
 
 class PersonalCollection(db.Model):
     __tablename__ = 'personal_collections'
@@ -13,7 +13,8 @@ class PersonalCollection(db.Model):
 
     card = relationship('Card', back_populates="personal_collections")
 
-class PersonalCollectionSchema(ma.Schema):
+class PersonalCollectionSchema(ma.Schema):    
     card = fields.Nested('CardSchema')
+
     class Meta:
         fields = ('id', 'user_id', 'card_id', 'card')
