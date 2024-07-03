@@ -27,9 +27,13 @@ def get_auction(id):
 
 @auction_bp.route('/card/<int:id>', methods=['GET'])
 def get_all_auctions_on_one_card(id):
+    card = db.get_or_404(Card, id)
     stmt = db.select(Auction).where(Auction.card_id == id) 
     auctions = db.session.scalars(stmt).all()
-    return AuctionSchema(many=True).dump(auctions), 200
+    if auctions:
+        return AuctionSchema(many=True).dump(auctions), 200
+    else:
+        return {'message': 'No auctions found for this card'}, 200
 
 @auction_bp.route('/', methods=['POST'])
 @jwt_required()

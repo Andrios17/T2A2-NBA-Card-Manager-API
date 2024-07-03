@@ -215,7 +215,7 @@ __Header__: N/A
 
 __Body__: Users must enter a valid email address, a password which holds a minimum of 10 characters, their first name, last name and a unique username. 
 
-__Response__: A success message will be returned when there is a successful registration of a user.
+__Response__: A success message will be returned when there is a successful registration of a user with a ```201``` response
 
 __Error__: Errors occur when a user tries to enter an email address or username which is already stored in the database or their password is invalid.
 
@@ -239,7 +239,7 @@ __Header__: N/A
 
 __Body__: Users must enter a valid email address, and password associated with a user in the database.
 
-__Response__: A JWT will be returned to the user
+__Response__: A JWT will be returned to the user with a ```200``` response
 
 __Error__: Errors occur when a user tries the wrong combination of an email/password to an associated user in the database.
 
@@ -261,7 +261,7 @@ __Header__: Valid JWT belonging to a user with admin privledges
 
 __Body__: N/A
 
-__Response__: A view of all registered excluding sensitive information such as password
+__Response__: A view of all registered excluding sensitive information such as password with a ```200``` response
 
 __Error__: An error occurs when a user without admin privledges tries to access this route
 
@@ -283,7 +283,7 @@ __Header__: Valid JWT belonging to a user with admin privledges
 
 __Body__: N/A
 
-__Response__: A view of a specific user details excluding sensitive information such as password
+__Response__: A view of a specific user details excluding sensitive information such as password with a ```200``` response.
 
 __Error__: An error occurs when a user without admin privledges tries to access this route
 
@@ -305,7 +305,7 @@ __Header__: Valid JWT belonging to a user with admin privledges
 
 __Body__: The admin can change any of the fields they wish to new values. For example, they can change a users password, email address, username etc
 
-__Response__: A view of a specific user details excluding sensitive information such as password
+__Response__: A view of a specific user details excluding sensitive information such as password with a ```200``` response.
 
 __Error__: An error occurs when a user without admin privledges tries to access this route. An error will also occur if the user does not exist. 
 
@@ -329,7 +329,7 @@ __Header__: Valid JWT belonging to a user with admin privledges
 
 __Body__: N/A
 
-__Response__: A success message confiriming deletion of a user will be returned to the user
+__Response__: A success message confiriming deletion of a user will be returned to the user with a ```200``` response.
 
 __Error__: An error occurs when a user without admin privledges tries to access this route. An error will also occur if the user does not exist.
 
@@ -353,7 +353,7 @@ __Header__: Valid JWT belonging to a user with admin privledges
 
 __Body__: The admin will need to add an email, password longer than 10 chracters, first name, last name, username and admin privledges to the user. 
 
-__Response__: A success message confiriming deletion of a user will be returned to the user
+__Response__: A success message confiriming deletion of a user will be returned to the user with a ```200``` response.
 
 __Error__: An error occurs when a user without admin privledges tries to access this route. An error will occur if any of the attributes of the user are missing from the body or the password is shorter than 10 characters. 
 
@@ -379,7 +379,7 @@ __Header__: Valid JWT belonging to a user
 
 __Body__: A title input is required and the post will not be created without it, a description key is optional.
 
-__Response__: The post which has just been created will be returned to the user, and user information such as the user's username.
+__Response__: The post which has just been created will be returned to the user, and user information such as the user's username with a ```201``` response
 
 __Error__: An error occurs when a user without a valid JWT tries to access the route, or a title has been neglected from the body. 
 
@@ -403,7 +403,7 @@ __Header__: Valid JWT belonging to a user
 
 __Body__: A message input is required and the post will not be created without it.
 
-__Response__: The comment which has just been created will be returned to the user, and user information such as username
+__Response__: The comment which has just been created will be returned to the user, and user information such as username with a ```201``` response
 
 __Error__: An error occurs when a user without a valid JWT tries to access the route, message has been omitted from the body or the post which the comment relates to does not exist.
 
@@ -427,7 +427,7 @@ __Header__: N/A
 
 __Body__: N/A
 
-__Response__: All posts stored in the database will be returned to the user, along with any associated comments. 
+__Response__: All posts stored in the database will be returned to the user, along with any associated comments with a ```200``` response
 
 __Error__: No errors should persist on this route, however if no posts are stored in the database, the user will recieve this ```return {'message': 'No posts found'}, 200```
 
@@ -466,7 +466,7 @@ __Header__: JWT associated with the original user who created the post or an adm
 
 __Body__: The user can edit either or the title attribute, or the description attribute of their original post. 
 
-__Response__: The updated post, along with the original comments will be returned to the user. 
+__Response__: The updated post, along with the original comments will be returned to the user with a ```200``` response
 
 __Error__: An error message will occur if the user tries to update a post for which they are not the owner of/admin, the post they are trying to update does not exist or the title field is less than 10 characters.
 
@@ -482,3 +482,341 @@ __Error__
 
 ![update post error](docs/Update_Post_Error.png)
 
+### Update a comment
+
+__Verb__: PUT, PATCH
+
+__Path__: /posts/comments/<int: post_id>/<int: comment_id>
+
+__Header__: JWT associated with the original user who created the post or an administrator
+
+__Body__: The user can edit either the message of the comment they are the owner of. 
+
+__Response__: The updated comment with a ```200``` response
+
+__Error__: An error message will occur if the user tries to update a comment for which they are not the owner of/admin or the comment does not exist. 
+
+__Success__:
+![update comment](docs/update_comment_S.png)
+
+__error__:
+![update comment](docs/update_comment_e.png)
+
+![update comment](docs/update_comment_e2.png)
+
+### Delete a Post
+
+__Verb__: DELETE
+
+__Path__: /posts/<int: post_id>/
+
+__Header__: JWT associated with the original user who created the post or an administrator
+
+__Body__: N/A
+
+__Response__: Success message with a ```200``` response
+
+__Error__: An error message will occur if the user tries to delete a post for which they are not the owner of/admin or the post does not exist.
+
+__Success__:
+![delete a post](docs/delete_post_s.png)
+
+__Error__:
+
+![delete a post](docs/delete_post_e.png)
+
+![delete a post](docs/delete_post_e2.png)
+
+### Delete a Comment
+
+__Verb__: DELETE
+
+__Path__: /posts/comments/<int: post_id>/<int: comment_id>
+
+__Header__: JWT associated with the original user who created the comment or an administrator
+
+__Body__: N/A
+
+__Response__: Success message with a ```200``` response
+
+__Error__: An error message will occur if the user tries to delete a comment for which they are not the owner of/admin or the comment/post does not exist.
+
+__Success__:
+![delete a comment](docs/delete_comment_s.png)
+
+__error__:
+![delete a comment](docs/delete_comment_e.png)
+
+![delete a comment](docs/delete_comment_e2.png)
+
+### Cards
+
+### Get all cards in database
+
+__Verb__: GET
+
+__Path__: /posts/cards
+
+__Header__: N/A
+
+__Body__: N/A
+
+__Response__: All cards in database should be returned with a ```200``` response
+
+__Error__: Should be no expected errors as will also return the default seeded cards
+
+__Success__:
+
+![Get all cards](docs/Get_all_cards.png)
+
+### Get a specific card 
+
+__Verb__: GET
+
+__Path__: /posts/cards/<int: id>
+
+__Header__: N/A
+
+__Body__: N/A
+
+__Response__: The card will be displayed with a ```200``` response
+
+__Error__: An error will occur if the user tries to enter a card which does not exist in the database. 
+
+__Success__:
+![Get a specific card](docs/Get_a_specific_card.png)
+
+__Error__:
+![Get a specific card error](docs/get_specific_card.png)
+
+### Create a card 
+
+__Verb__: POST
+
+__Path__: /posts/cards
+
+__Header__: JWT with a user who has admin privledges
+
+__Body__: Enter the following attributes with corresponding data first_name, last_name, team_name, position, set, year. 
+
+__Response__: The card will be displayed with a ```200``` response
+
+__Error__: An error will occur if the user who is trying to access this route is not an admin, or has missed any filed required to create a card in this database. 
+
+__Success__
+
+![Create Card](docs/Create_Card.png)
+
+__Error__
+![Create Card](docs/Create_Card_E.png)
+
+![Create Card](docs/Create_Card_E2.png)
+
+### Update a card
+
+__Verb__: PUT, PATCH
+
+__Path__: /posts/cards/<int: id>
+
+__Header__: JWT with a user who has admin privledges
+
+__Body__: Enter the card model attributes which you wish to edit.
+
+__Response__: The updated card will be displayed with a ```200``` response
+
+__Error__: An error will occur if the user who is trying to access this route is not an admin or the card does not exist
+
+__Success__:
+![Update Card](docs/Update_Card.png)
+
+__Error__:
+
+![Update Card](docs/Update_Card_E.png)
+
+![Update Card](docs/Update_Card_E2.png)
+
+### Delete a card
+
+__Verb__: DELETE
+
+__Path__: /posts/cards/<int: id>
+
+__Header__: JWT with a user who has admin privledges
+
+__Body__: N/A
+
+__Response__: A success message will be displayed with a ```200``` response
+
+__Error__: An error will occur if the user who is trying to access this route is not an admin or the card does not exist. 
+
+__Success__:
+
+![Delete Card](docs/Delete_Card.png)
+
+__Error__:
+
+![Delete Card Error](docs/Delete_Card_E.png)
+
+![Delete Card Error](docs/Delete_Card_E2.png)
+
+### Personal Collections
+
+### Viewing your own personal collection
+
+__Verb__: GET
+
+__Path__: /personal_collection
+
+__Header__: JWT of a valid user
+
+__Body__: N/A
+
+__Response__: All cards in the users personal collection will be displayed with a ```200``` response
+
+__Error__: An error will occur if the user who is trying to access this route is not a registered user. If there are no  cards in the personal collection, it will display the following message: ```{'message': 'You do not have any cards in your collection'}, 200```
+
+__Success__:
+
+![Get PC](docs/Get_PC.png)
+
+__Error__:
+
+![Get PC](docs/Get_PC_E.png)
+
+### Get another users personal collection
+
+__Verb__: GET
+
+__Path__: /personal_collection/<int: id>
+
+__Header__: JWT of a valid user
+
+__Body__: N/A
+
+__Response__: All cards in the specified users personal collection will be displayed with a ```200``` response
+
+__Error__: An error will occur if the user who is trying to access this route is not a registered user. If there are no cards in the personal collection, it will display the following message: ```{'message': 'This user does not have any cards in their collection'}, 404```
+
+__Success__:
+
+![Get Users personal collection](docs/Get_user_pc.png)
+
+__Error__:
+
+![Get Users personal collection](docs/Get_user_pc_e.png)
+
+### Create entries in personal collection
+
+__Verb__: POST
+
+__Path__: /personal_collection
+
+__Header__: JWT of a valid user
+
+__Body__: The user will need to enter the atrribute ```card_id``` which corresponds to the cards stored in the database to add this card to their personal collection. 
+
+__Response__: A display of the attributes of the cards that have just been added along with ```200``` response
+
+__Error__: An error will occur if the user who is trying to access this route is not a registered user, if the user enters the wrong type of data or if the card does not exist in the database. 
+
+__Success__:
+
+![Create PC](docs/Create_PC.png)
+
+__Error__:
+
+![Create PC](docs/Create_PC_E.png)
+
+![Create PC](docs/Create_PC_E2.png)
+
+![Create PC](docs/Create_PC_E3.png)
+
+
+### Delete Entries in Personal Collection
+
+__Verb__: DELETE
+
+__Path__: /personal_collection/<int:id>
+
+__Header__: JWT matching the identity of the owner of the pc referenced or an admin
+
+__Body__: N/A
+
+__Response__: A success message notifying the user the card has been deleted along with ```200``` response
+
+__Error__: An error will occur if the user who is trying to access this route is not a registered owner/admin or if the entry which is trying to be deleted. 
+
+__Success__:
+
+![Delete Card](docs/Delete_PC.png)
+
+__Error__:
+
+![Delete Card Error](docs/Delete_PC_e.png)
+
+![Delete Card Error](docs/Delete_PC_e2.png)
+
+### Auctions and Bids
+
+### Get all auctions and associated bids
+
+__Verb__: GET
+
+__Path__: /auction
+
+__Header__: N/A
+
+__Body__: N/A
+
+__Response__: All auctions and associated bids will be displayed to the user along with ```200``` response
+
+__Error__: No expected errors on this route as the seeded inputs will always be displayed in every circumstance. 
+
+__Success__:
+![Get all auctions/bids](docs/Get_Auctions.png)
+
+### Get a specific auction and associated bids
+
+__Verb__: GET
+
+__Path__: /auction/<ind: auction_id>
+
+__Header__: N/A
+
+__Body__: N/A
+
+__Response__: The auction and associated bids will be displayed to the user along with ```200``` response
+
+__Error__: If the user enters an auction_id which does not exist, the will be fronted with a ```404 status code``` along with a message stating the auction does not exits. 
+
+__Success__:
+
+![Get a specific auction](docs/Get_a_auction.png)
+
+__Error__:
+
+![Get a specific auction error](docs/Get_a_auction_e.png)
+
+### Get all auctions for a specific card
+
+__Verb__: GET
+
+__Path__: /auction/card/<ind: card_id>
+
+__Header__: N/A
+
+__Body__: N/A
+
+__Response__: All auctions and associated bids for the desired card will be displayed to the user along with ```200``` response
+
+__Error__: If the user enters a card_id which does not exist, they will be fronted with a ```404 status code``` along with a message stating the card cannot be found. If the card does exist, however, there are no auction for it currently, they will be displayed with the following message ```{'message': 'No auctions found for this card'}, 200```
+
+__Success__:
+
+![auction on card](docs/auction_on_card.png)
+
+__Error__:
+
+![auction on card](docs/auction_on_card_e.png)
+
+![auction on card](docs/auction_on_card_e2.png)

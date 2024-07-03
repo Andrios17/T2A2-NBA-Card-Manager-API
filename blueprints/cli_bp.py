@@ -109,6 +109,23 @@ def seed_comments():
     db.session.commit()
     print('Seeded Comments')
 
+@db_commands.cli.command('seed_personal_collections')
+def seed_personal_collections():
+    pcs = [
+        PersonalCollection(
+            card_id=1,
+            user_id=1
+        ),
+        PersonalCollection(
+            card_id=2,
+            user_id=1
+        )
+    ]
+
+    db.session.add_all(pcs)
+    db.session.commit()
+    print('Seeded Personal Collections')
+
 @db_commands.cli.command('seed_auctions')
 def seed_auctions():
     auctions = [

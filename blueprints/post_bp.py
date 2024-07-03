@@ -113,7 +113,7 @@ def update_comment(id, comment):
         db.session.commit()
         return CommentSchema().dump(comment), 200
     else:
-        return {'message': 'Unauthorized or comment does not exist'}, 401
+        return {'error': 'comment does not exist'}, 404
 
 # Delete a comment
 @posts_bp.route('/comments/<int:id>/<int:comment>', methods=['DELETE'])
@@ -121,12 +121,12 @@ def update_comment(id, comment):
 def delete_comment(id, comment):
     post = db.get_or_404(Post, id)
     identity = get_jwt_identity()
-    admin_or_owner(post)
     stmt = db.select(Comment).where(and_(Comment.id == comment, Comment.user_id == identity, Comment.post_id == id))
     comment = db.session.scalar(stmt)
     if comment:
+        admin_or_owner(comment)
         db.session.delete(comment)
         db.session.commit()
         return {'message': 'Comment deleted'}, 200
     else:
-        return {'message': 'Unauthorized or comment does not exist'}, 401
+        return {'Error': 'Comment does not exist'}, 404

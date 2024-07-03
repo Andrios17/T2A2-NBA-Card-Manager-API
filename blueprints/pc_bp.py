@@ -17,7 +17,7 @@ def get_all_pc():
     stmt = db.select(PersonalCollection).where(PersonalCollection.user_id == identity)
     collection = db.session.scalars(stmt).all()
     if collection:
-        return PersonalCollectionSchema(many=True, exclude=['card_id', 'user_id']).dump(collection), 201
+        return PersonalCollectionSchema(many=True, exclude=['card_id', 'user_id']).dump(collection), 200
     else:
         return {'message': 'You do not have any cards in your collection'}, 200
 
@@ -46,7 +46,7 @@ def create_pc():
         db.session.commit()
         return PersonalCollectionSchema().dump(pc), 201
     else:
-        return {'message': 'Card does not exit'}, 404
+        return {'Error': 'Card does not exist'}, 404
 
 @pc_bp.route('/<int:id>', methods=['DELETE'])
 @jwt_required()
