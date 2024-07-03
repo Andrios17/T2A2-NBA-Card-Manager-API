@@ -201,9 +201,94 @@ All tables now conform to the third normal form of data normalisation. All entit
 
 Following this practice removes the need for dependencies on data sanisation and interpretation as queries can be utilised to effectively view all data associated with the personal collections table, thus the creation of an effective and effcient database can be implemented.
 
+## R7 - Description of the implementws modwls and their relationships, including how the relationships aid the database implementation
+
+### User Model
+
+![user model](docs/User_Model.png)
+
+Above is the model for the User Model. The name of the table which maps to this model is denoted in the ```_tablename_``` attribute and is 'Users'. It has 7 attributes which include ```ID, username, email, password, first_name, last_name and is_admin```. Each of these attributes are required when a new instance of this model is created. 
+
+The user model can be considered to be the central cog in the database as it relates to 5 other tables. These include; comment, auction, bid, post and personal collections. As this API is heavily based on User inputs and interaction, it is understandable to concieve that the table which stores all user data will be one with many relationships. In this instance, the users table has a zero or many relationship with the mentioned tables previously. This enhances query search parameters and improve performance of the applications database. 
+
+An example of the syntax utilised to take advantage of these kinds of relationships can be seen below:
+
+```select * from posts full join users on posts.user_id = users.id;```
+
+This will complete a full join and display all the posts stored in the in the database, along with the information of the user who created it. Taking advantage of these powerful search paramaters is a motivating factor. This sort of search can be used for all models which are related to this model. 
+
+### Post Model
+
+![post model](docs/Post_Model.png)
+
+As you can see above, there is a code snippet which depicts the Post model which is utilised to create posts within the API's blog feature. There is five different attributes which include ID which acts as the primary key in the table, title, description, date_posted and user_id. ```User_id``` is utilised as a foregein key to establish a relationship with the users table. It is useful to have this attribute in posts table as it acts as an efficient way to denote who has created each post which is stored in the table. So acting on this, a post can have one and only one user, but a user can have zero or many posts. 
+
+Furthermore, the post model can be considered to be the parent table of the comments table, as a post can have zero or many comments. This relationship is established in the command ```comment = db.relationship('Comment', back_populates='post)```. 
+
+An example of the syntax utilised to take advantage of these kinds of relationships can be seen below:
+
+```select * from posts full join users on posts.user_id = users.id;```
+
+The benefits of this kind search has been explained above as it is the same syntax used. 
+
+### Comment Model 
+
+![comment model](docs/Comment_Model.png)
+
+Above is the code utilised to develop the comment model in the created API. There are 5 seperate attributes which are utilised to create an instance of the comment model. These include ID which acts as the primary key of the table, message, date_posted, post_id which is a foregein key which establishes a relation to the posts table, and user_id which is a foreign key which establishes a relation to the users table.
+
+Based on this, this table has two relationships. Both a one and only relationship with the posts and users tables. Having this flexibility allowes general information to be displayed more easier when accessing the routes in the API, such as when accessing a post, all the comments associated with that post are displayed also, as well as user information. Having multiple relationships allows for complex database queries to be established to view and clarify multiple levels of information at a time. 
+
+An example of the syntax utilised to take advantage of these kinds of relationships can be seen below:
+
+```select * from posts full join comments on posts.id = comments.post_id;```
+
+### Card Model
+
+![Card Model](docs/card_model.png)
+
+Above is the code utilised to create the Card model for the cards table in the database for this API. There 7 different attributes which need to be established prior to completion of a new instance of this model being created. This includes ID which is the primary key for this model, first_name, last_name, team_name, position, set and year. 
+
+On top of this, this model has acts as a parent to two other tables in this database through a zero or many relationship which is established in the code below the attribute defintions. Essentially a card can belong to zero or many personal collection entities and zero or many auctions. Breaking up this table and connecting the required table through a relationship allows for atmoic entities in the database as well as more efficient and complex data structures within the the database. 
+
+An example of the syntax utilised to take advantage of these kinds of relationships can be seen below:
+
+```select * from cards full join auctions on cards.id = auctions.card_id;```
+
+The above syntax would allow a user to match  all the auctions to specific cards and view all the information regarding both entities at the same time. This is extremely convenient as it speeds up the time and reduces difficulty in data comparison.
+
+### Personal Collection
+
+![Personal Collection](docs/PC_Model.png)
+
+Above, is the personal collection model which is utilised to create the personal_collection table within the database. It is extremely simple in its design and this is done due to the fact that it utilises two key relationships to fill out table data. The attributes in this table is ID which acts as the primary key of the table, user_id which is a foregein key which establishes a one and only one relationship with the user table, and card_id which is a foreign key which establishes a one and only one relationship with the card table.
+
+The power of these relationships are most seen when utilising the power of both the search queries in SQL as well as marshmallow schemas to convey the most important information. Without the ability to create these relationships, the information in this table would have to remain in first normal form and the efficentency of the database would take a massive hit. Please look further in the documentation in the endpoints to see how the utilisation of these relationships have allowed me to correctly display the most important information related to personal collections. However, if an individual was to use SQL to query the database, they could enhance their search of the personal collection table by following a query akin to the following:
+
+```select * from personal_collections full join cards on personal_collections.card_id = card.id;```
+
+### Auctions & Bids
+
+![Auctions](docs/Auction_model.png)
+
+The code necessary to create the model for the Auctions table can be found above. As you can see there are 6 different attributes which need to be created in order for the auction to be added to the database. These include ID which acts as the primary key for this table, start_date, end_date, start_price, card_id which acts as a foregin key and creates a one and only one relationship with the cards table, and user_id which acts as a foreign key and creates a one and only one relationship with the users table.
+
+The benefits of these relationships are quite similar to the ones mentioned in the personal_collections explaination. 
+
+However, this table also acts as a parent table for the bids table. This is due to the fact that an Auction can have zero or many bids, but a bid can have one and only one auction. Bids rely on an auction to be existent, however an auction can be existent without bids. You can see how the bid model is designed below:
+
+![Bids Model](docs/Bid_Model.png)
+
+As you can see the relationship between the two is established through the existence of auction_id which acts as a foregein key. Having these two tables linked allows the user to easily interact with and examine the data which is presented to them in both tables, as they are of course intrinscally linked. 
+
+A user could complete this through visiting the route of the API which is further explained below or by connecting to the database directly and performing the following command:
+
+```select * from auctions full join bids on auctions.id = bid.auction_id;```
+
+
 ## R8 - Endpoints of the API
 
-### Users
+## Users
 
 ### Register Users
 
@@ -367,7 +452,7 @@ __Error__:
 
 ![Create User Error](docs/AdminCreateUserE2.png)
 
-### Posts/Comments
+## Posts/Comments
 
 ### Create a post
 
@@ -549,7 +634,7 @@ __error__:
 
 ![delete a comment](docs/delete_comment_e2.png)
 
-### Cards
+## Cards
 
 ### Get all cards in database
 
@@ -659,7 +744,7 @@ __Error__:
 
 ![Delete Card Error](docs/Delete_Card_E2.png)
 
-### Personal Collections
+## Personal Collection
 
 ### Viewing your own personal collection
 
@@ -756,7 +841,7 @@ __Error__:
 
 ![Delete Card Error](docs/delete_pc_e2.png)
 
-### Auctions and Bids
+## Auctions and Bids
 
 ### Get all auctions and associated bids
 
