@@ -199,4 +199,286 @@ __ID__ | __First Name__| __Last Name__| __User Name__ |__Email__|__Password__|__
 
 All tables now conform to the third normal form of data normalisation. All entities which relate to a specific kind of data are now found in each of their own tables and there is no overlap of data found in the personal collections table. Relationships which are formed between the other two tables in the personal collections table are only established by calling upon the primary keys of other tables in the database. Columns which are not dependent on the primary keys have been removed. Through the creation of these new tables, it allows for more attributes to be added which are semenatically key and relevent to that table. For example, users table has been expanded upon to include information which is extremely relevent. This table can now be utilised to create relationships with other tables in the database which rely upon users. The personal collection table has been shrunk to only include the primary key identifier along with foregein keys which link the tables to relevent data. Search query optimsation is now extremely efficient as a user can query the personal collection table to effectively find all entries which correlate to the users appropiratly. 
 
-Following this practice removes the need for dependencies on data sanisation and interpretation as queries can be utilised to effectively view all data associated with the personal collections table, thus the creation of an effective and effcient database can be implemented. 
+Following this practice removes the need for dependencies on data sanisation and interpretation as queries can be utilised to effectively view all data associated with the personal collections table, thus the creation of an effective and effcient database can be implemented.
+
+## R8 - Endpoints of the API
+
+### Users
+
+### Register Users
+
+__Verb__: POST
+
+__Path__: /users/register
+
+__Header__: N/A
+
+__Body__: Users must enter a valid email address, a password which holds a minimum of 10 characters, their first name, last name and a unique username. 
+
+__Response__: A success message will be returned when there is a successful registration of a user.
+
+__Error__: Errors occur when a user tries to enter an email address or username which is already stored in the database or their password is invalid.
+
+__Success__:
+
+![Register Success](docs/RegisterEndpointS.png)
+
+__Error__:
+
+![Register Error](docs/RegisterEndpointE.png)
+
+![Register Error](docs/RegisterEndpointE2.png)
+
+### Login
+
+__Verb__: POST
+
+__Path__: /users/login
+
+__Header__: N/A
+
+__Body__: Users must enter a valid email address, and password associated with a user in the database.
+
+__Response__: A JWT will be returned to the user
+
+__Error__: Errors occur when a user tries the wrong combination of an email/password to an associated user in the database.
+
+__Success__:
+
+![Login Success](docs/LoginS.png)
+
+__Error__:
+
+![Login Error](docs/LoginE.png)
+
+### Get all registered users
+
+__Verb__: GET
+
+__Path__: /users
+
+__Header__: Valid JWT belonging to a user with admin privledges
+
+__Body__: N/A
+
+__Response__: A view of all registered excluding sensitive information such as password
+
+__Error__: An error occurs when a user without admin privledges tries to access this route
+
+__Success__:
+
+![Get all users success](docs/GetalluserS.png)
+
+__Error__:
+
+![Get all users error](docs/GetalluserE.png)
+
+### Get a specific user
+
+__Verb__: GET
+
+__Path__: /users/<int: id>
+
+__Header__: Valid JWT belonging to a user with admin privledges
+
+__Body__: N/A
+
+__Response__: A view of a specific user details excluding sensitive information such as password
+
+__Error__: An error occurs when a user without admin privledges tries to access this route
+
+__Success__:
+
+![Get one user](docs/GetOneUserS.png)
+
+__Error__: 
+
+![Get one user error](docs/GetOneUserE.png)
+
+### Edit User
+
+__Verb__: PATCH, PUT
+
+__Path__: /users/<int: id>
+
+__Header__: Valid JWT belonging to a user with admin privledges
+
+__Body__: The admin can change any of the fields they wish to new values. For example, they can change a users password, email address, username etc
+
+__Response__: A view of a specific user details excluding sensitive information such as password
+
+__Error__: An error occurs when a user without admin privledges tries to access this route. An error will also occur if the user does not exist. 
+
+__Success__:
+
+![Edit User Success](docs/EditUserS.png)
+
+__Error__:
+
+![Edit User Error](docs/EditUserE.png)
+
+![Edit User Error](docs/EditUserE2.png)
+
+### Delete User
+
+__Verb__: Delete
+
+__Path__: /users/<int: id>
+
+__Header__: Valid JWT belonging to a user with admin privledges
+
+__Body__: N/A
+
+__Response__: A success message confiriming deletion of a user will be returned to the user
+
+__Error__: An error occurs when a user without admin privledges tries to access this route. An error will also occur if the user does not exist.
+
+__Success__:
+
+![Delete User Success](docs/DeleteUserS.png)
+
+__Error__:
+
+![Delete User Error](docs/DeleteUserE.png)
+
+![Delete User Error](docs/DeleteUserE2.png)
+
+### Create User - Admin 
+
+__Verb__: POST
+
+__Path__: /users/create
+
+__Header__: Valid JWT belonging to a user with admin privledges
+
+__Body__: The admin will need to add an email, password longer than 10 chracters, first name, last name, username and admin privledges to the user. 
+
+__Response__: A success message confiriming deletion of a user will be returned to the user
+
+__Error__: An error occurs when a user without admin privledges tries to access this route. An error will occur if any of the attributes of the user are missing from the body or the password is shorter than 10 characters. 
+
+__Success__:
+
+![Create User success](docs/AdminCreateUserS.png)
+
+__Error__:
+
+![Create User Error](docs/AdminCreateUserE.png)
+
+![Create User Error](docs/AdminCreateUserE2.png)
+
+### Posts/Comments
+
+### Create a post
+
+__Verb__: POST
+
+__Path__: /posts
+
+__Header__: Valid JWT belonging to a user
+
+__Body__: A title input is required and the post will not be created without it, a description key is optional.
+
+__Response__: The post which has just been created will be returned to the user, and user information such as the user's username.
+
+__Error__: An error occurs when a user without a valid JWT tries to access the route, or a title has been neglected from the body. 
+
+__Success__:
+
+![Create Post](docs/Create_Post_S.png)
+
+__Error__:
+
+![Create Post Error](docs/Create_Post_E.png)
+
+![Create Post Error](docs/Create_Post_E2.png)
+
+### Create a comment
+
+__Verb__: POST
+
+__Path__: /posts/comments/<int: id>
+
+__Header__: Valid JWT belonging to a user
+
+__Body__: A message input is required and the post will not be created without it.
+
+__Response__: The comment which has just been created will be returned to the user, and user information such as username
+
+__Error__: An error occurs when a user without a valid JWT tries to access the route, message has been omitted from the body or the post which the comment relates to does not exist.
+
+__Success__:
+
+![Create a comment](docs/Create_a_commentS.png)
+
+__Error__:
+
+![Create a comment error](docs/Create_CommentS.png)
+
+![Create a comment error](docs/Create_CommentE.png)
+
+### Get all posts and related comments
+
+__Verb__: GET
+
+__Path__: /posts
+
+__Header__: N/A
+
+__Body__: N/A
+
+__Response__: All posts stored in the database will be returned to the user, along with any associated comments. 
+
+__Error__: No errors should persist on this route, however if no posts are stored in the database, the user will recieve this ```return {'message': 'No posts found'}, 200```
+
+__Success__:
+
+![Get all posts and related comments](docs/Get_all_posts.png)
+
+### Get a specific post and related comments
+
+__Verb__: GET
+
+__Path__: /posts/<int: id>
+
+__Header__: N/A
+
+__Body__: N/A
+
+__Response__: The post which is entered into the url will be returned to the user, along with any related comments to the post. 
+
+__Error__: An error message will occur if the user searches for a post which does not exist in the database. 
+
+__Success__:
+
+![Get a post and comments](docs/Get_a_post_S.png)
+
+__Error__:
+![Get a post and comments error](docs/Get_a_post_e.png)
+
+### Update a post 
+
+__Verb__: PUT, PATCH
+
+__Path__: /posts/<int: id>
+
+__Header__: JWT associated with the original user who created the post or an administrator
+
+__Body__: The user can edit either or the title attribute, or the description attribute of their original post. 
+
+__Response__: The updated post, along with the original comments will be returned to the user. 
+
+__Error__: An error message will occur if the user tries to update a post for which they are not the owner of/admin, the post they are trying to update does not exist or the title field is less than 10 characters.
+
+__Success__
+
+![update post](docs/Update_PostS.png)
+
+__Error__
+
+![update post error](docs/Update_Post_E.png)
+
+![update post error](docs/Update_Post_E2.png)
+
+![update post error](docs/Update_Post_Error.png)
+

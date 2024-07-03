@@ -12,7 +12,7 @@ class Post(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
 
     title: Mapped[Optional[str]] = mapped_column(String(250))
-    description: Mapped[str] = mapped_column(Text())
+    description: Mapped[Optional[str]] = mapped_column(Text())
     date_posted: Mapped[date]
 
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
@@ -27,7 +27,7 @@ class PostSchema(ma.Schema):
 
     title=fields.String(required=True, validate=And(
         Regexp('^[0-9a-zA-Z ]+$', error='Title must only contain alphanumeric characters'),
-        Length(max=250, error='Title cannot be longer than 250 characters')
+        Length(min=10, max=250, error='Title cannot be shorter than 10 characters or longer than 250 characters')
     ))
     description=fields.String(required=False, validate=Length(max=63000, error='Description must be less than 63,000 characters'))
 

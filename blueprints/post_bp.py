@@ -27,7 +27,7 @@ def get_post(id):
     if post:
         return PostSchema().dump(post), 200
     else:
-        return {'message': 'Post does not exist'}, 404
+        return {'error': 'Post does not exist'}, 404
 
 # Create a new post
 @posts_bp.route('/', methods=['POST'])
@@ -38,11 +38,10 @@ def create_post():
     stmt = db.select(User).where(User.id == author)
     author = db.session.scalar(stmt)
     post = Post(
-        title=params['title'],
-        description=params['description'],
+        title=params.get('title'),
+        description=params.get('description',''),
         date_posted=date.today(),
         user_id=get_jwt_identity(),
-        user_username=author.username
     )
     db.session.add(post)
     db.session.commit()

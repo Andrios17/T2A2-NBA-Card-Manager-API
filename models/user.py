@@ -26,14 +26,12 @@ class User(db.Model):
 
 class UserSchema(ma.Schema):
 
-    email = fields.Email(required=True)
-    password = fields.String(required=True, validate=Length(min=10, error='Password must be at least 10 characters'))
-    username = fields.String(required=True, validate=And(
+    email = fields.Email()
+    password = fields.String(validate=Length(min=10, error='Password must be at least 10 characters'))
+    username = fields.String(validate=And(
         Length(max=38, error='Username cannot be longer than 38 characters'),
         Regexp('^[a-zA-Z0-9]+$', error='Username can only contain letters and numbers')
     ))
-    first_name = fields.String(required=True)
-    last_name = fields.String(required=True)
     is_admin = fields.Boolean(default=False)
 
     class Meta:

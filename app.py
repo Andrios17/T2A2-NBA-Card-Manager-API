@@ -21,3 +21,11 @@ if __name__ == '__main__':
 def invalid_request(err):
     return {'error': vars(err)['messages']}, 400
 
+@app.errorhandler(405)
+@app.errorhandler(404)
+def not_found(err):
+    return {'error': 'Not Found'}, 404
+
+@app.errorhandler(KeyError)
+def missing_key(err):
+    return {'error': f'{str(err)} is missing'}, 400
