@@ -7,6 +7,7 @@ from models.card import Card, CardSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from init import db
 from sqlalchemy import and_
+from sqlalchemy.exc import DataError
 
 auction_bp = Blueprint('auction', __name__, url_prefix='/auction')
 
@@ -40,7 +41,7 @@ def get_all_auctions_on_one_card(id):
 def create_auction():
     identity = get_jwt_identity()
     params = AuctionSchema(only=['end_date', 'start_price', 'card_id']).load(request.json, unknown='exclude')
-    stmt = db.select(PersonalCollection).where(and_(PersonalCollection.id == identity, PersonalCollection.card_id == params['card_id']))
+    stmt = db.select(PersonalCollection).where(and_(PersonalCollection.user_id == identity, PersonalCollection.card_id == params['card_id']))
     pc = db.session.scalar(stmt)
     if pc:
         auction = Auction(
@@ -54,7 +55,7 @@ def create_auction():
         db.session.commit()
         return AuctionSchema().dump(auction), 201
     else:
-        return {'message': 'Unauthorized or card does not exist'}, 401
+        return {'message': 'Card does not exist in the users personal collection'}, 401
     
 
 @auction_bp.route('/<int:id>', methods=['PUT', 'PATCH'])
@@ -62,7 +63,7 @@ def create_auction():
 def update_auction(id):
     auction = db.get_or_404(Auction, id)
     identity = get_jwt_identity()
-    stmt = db.select(Auction).where(and_(Auction.id == id, auction.user_id == identity))
+    stmt = db.select(Auction).where(and_(Auction.id == id, Auction.user_id == identity))
     auction = db.session.scalar(stmt)
     if auction:
         params = AuctionSchema(only=['end_date']).load(request.json, unknown='exclude')
@@ -113,7 +114,7 @@ def create_bid(id):
         db.session.commit()
         return BidSchema().dump(bid), 201
     else:
-        return {'message': 'Unauthorized'}, 401
+        return {'message': 'Unauthorized, you are the owner of the auction and cannot bid'}, 401
 
 @auction_bp.route('/bid/<int:id>', methods=['PUT', 'PATCH'])
 @jwt_required()
@@ -126,7 +127,7 @@ def update_bid(id):
         db.session.commit()
         return BidSchema().dump(bid), 200
     else:
-        return {'message': 'Unauthorized'}, 401
+        return {'message': 'Unauthorized, you are not the owner of this bid'}, 401
 
 @auction_bp.route('/bid/<int:id>', methods=['DELETE'])
 @jwt_required()
@@ -139,3 +140,7 @@ def delete_bid(id):
         return {'message': 'Bid deleted'}, 200
     else:
         return {'message': 'Unauthorized'}, 401
+
+@auction_bp.errorhandler(DataError)
+def ints_only(err):
+    return {'error': 'please ensure you using ints when entering price and starting price'}, 400

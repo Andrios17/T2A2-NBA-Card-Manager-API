@@ -20,8 +20,6 @@ class Bid(db.Model):
 
 
 class BidSchema(ma.Schema):
-    price = fields.Int(validate=(Regexp('^[0-9]+$', error='Invalid, Price must be a whole number')))
-
     user = fields.Nested('UserSchema', only=('username',))
     auction = fields.Nested('AuctionSchema', only=('start_date', 'end_date', 'start_price'))
 

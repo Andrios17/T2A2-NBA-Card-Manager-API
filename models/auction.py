@@ -23,7 +23,6 @@ class Auction(db.Model):
 
 class AuctionSchema(ma.Schema):
     end_date = fields.Date(required=True, format="%Y-%m-%d")
-    start_price = fields.Int(validate=(Regexp('^[0-9]+$', error='Invalid, Starting_Price must be a whole number')))
 
     user = fields.Nested('UserSchema', only=('username', 'id'))
     card = fields.Nested('CardSchema', only=('first_name', 'last_name', 'set', 'year', 'team_name'))

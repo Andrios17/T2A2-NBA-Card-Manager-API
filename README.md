@@ -820,3 +820,142 @@ __Error__:
 ![auction on card](docs/auction_on_card_e.png)
 
 ![auction on card](docs/auction_on_card_e2.png)
+
+### Create an Auction
+
+__Verb__: POST
+
+__Path__: /auction
+
+__Header__: Valid JWT of a registered user
+
+__Body__: Users will need to include a starting_price, end_date and pass the card_id into the body of the request to create an auction. 
+
+__Response__: The new auction which has been just created will be displayed to the user along with ```201``` response
+
+__Error__: There are two key errors which may occur in this route, the first being that the user does not enter a valid token associated with a user of the application. Another is that if a user attempts to place a card on auction when it is not confirmed to be in their personal collection. In both circumstances a ```401``` response will be returned.
+
+__Success__:
+
+![Create an auction](docs/Create_Auction.png)
+
+__Error__:
+
+![Create an auction](docs/Create_Auction_E.png)
+
+![Create an auction](docs/Create_Auction_E2.png)
+
+### Create a bid
+
+__Verb__: POST
+
+__Path__: /auction/bid/<int: auction_id>
+
+__Header__: Valid JWT of a registered user that is not the owner of the auction
+
+__Body__: Users will need to pass an integer to the price attribute in the body of the request
+
+__Response__: The bid  which has been just created will be displayed to the user along with ```201``` response
+
+__Error__: There is one key error which can occur on this endpoint, and that is if the user who created the auctions attempts to bid on that auction, a message which reads ```{'message': 'Unauthorized, you are the owner of the auction and cannot bid'}, 401``` will be displayed along with ```401`` status code. 
+
+__Success__:
+
+![Create Bid](docs/Create_Bid.png)
+
+__Error__:
+
+![Create Bid](docs/Create_Bid_E.png)
+
+### Update Auction
+
+__Verb__: PUT,PATCH
+
+__Path__: /auction/<int: id>
+
+__Header__: Valid JWT of a registered user that is the owner of the auction
+
+__Body__: Users will only be able to alter the end_date attribute of the auction as changing the price will result in invalidating bids which may have already been placed.
+
+__Response__: The altered auction which has been just updated will be displayed to the user along with ```200``` response
+
+__Error__: A key error would occur if a user who is not the original creator of the auction attempts to update it, along with if the user puts in an invalid formatting for the new date which is being updated. 
+
+__Success__:
+
+![Update Auctions](docs/Update_Auction.png)
+
+__Error__: 
+
+![Update Auctions Error](docs/Update_Auction_E.png)
+
+![Update Auctions Error](docs/Update_Auction_E2.png)
+
+### Update Bids
+
+__Verb__: PUT,PATCH
+
+__Path__: /auction/bid/<int: id>
+
+__Header__: Valid JWT of a registered user that is the owner of the bid
+
+__Body__: Users will only be able to alter the price attribute of the bid. It must be a valid Int
+
+__Response__: The altered bid which has been just updated will be displayed to the user along with ```200``` response
+
+__Error__: A key error would occur if a user who is not the original creator of the bid attempts to update it, along with if the user puts in an invalid formatting for the new price which is being updated. 
+
+__Success__:
+
+![Update Bids Success](docs/Update_Bids.png)
+
+__Error__:
+
+![Update Bids Error](docs/Update_Bids_E2.png)
+
+![Update Bids Error](docs/Update_Bids_E.png)
+
+### Delete Auction
+
+__Verb__: DELETE
+
+__Path__: /auction/<int: id>
+
+__Header__: Valid JWT of a registered user that is the owner of the auction
+
+__Body__: N/A
+
+__Response__: The user will recieve a success message depending if there were bids on the auction or not. If there are they will recieve ```{'message': 'Auction and all bids associated deleted'}``` along with a ```200``` status code. If there werent any bids, the user will recieve ```{'message': 'Auction deleted'}``` along with a ```200``` status code. 
+
+__Error__: An error would occur if a user who is not the original creator of the auction attempts to delete it or attempt to delete an auction that does not exist. 
+
+__Success__:
+
+![Delete an auction](docs/Delete_Auction.png)
+
+__Error__:
+
+![Delete an auction](docs/Delete_Auction_E.png)
+
+
+### Delete Bid
+
+__Verb__: DELETE
+
+__Path__: /auction/bid/<int: bid_id>
+
+__Header__: Valid JWT of a registered user that is the owner of the bid
+
+__Body__: N/A
+
+__Response__: The user will recieve a success message stating ```{'message': 'Bid deleted'}``` along with a ```200``` status code. 
+
+__Error__: An error would occur if a user who is not the original creator of the bid attempts to delete it or attempts to delete a bid that does not exist. 
+
+__Success__:
+
+![Delete a bid](docs/Delete_Bid.png)
+
+__Error__:
+
+![Delete a bid](docs/Delete_Bid_E.png)
