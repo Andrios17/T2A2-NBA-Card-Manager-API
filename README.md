@@ -752,9 +752,9 @@ __Success__:
 
 __Error__:
 
-![Delete Card Error](docs/Delete_PC_e.png)
+![Delete Card Error](docs/Delete_PC_E.png)
 
-![Delete Card Error](docs/Delete_PC_e2.png)
+![Delete Card Error](docs/delete_pc_e2.png)
 
 ### Auctions and Bids
 
