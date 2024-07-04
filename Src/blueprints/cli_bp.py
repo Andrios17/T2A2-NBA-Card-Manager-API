@@ -11,12 +11,14 @@ from init import db, bcrypt
 
 db_commands = Blueprint('db', __name__)
 
+# Creates the database based on the imported models
 @db_commands.cli.command('create')
 def db_create():
     db.drop_all()
     db.create_all()
     print('Created all tables')
 
+# Seeds the database with sample data
 @db_commands.cli.command('seed_tables')
 def seed_tables():
     users = [
