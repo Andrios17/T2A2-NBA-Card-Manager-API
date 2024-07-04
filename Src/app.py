@@ -7,6 +7,7 @@ from blueprints.post_bp import posts_bp
 from blueprints.auction_bp import auction_bp
 from blueprints.pc_bp import pc_bp
 
+# Registering blueprints to the app
 app.register_blueprint(db_commands)
 app.register_blueprint(users_bp)
 app.register_blueprint(card_bp)
@@ -14,9 +15,13 @@ app.register_blueprint(posts_bp)
 app.register_blueprint(pc_bp)
 app.register_blueprint(auction_bp)
 
+
+# Running the Flask app with debug mode enabled
 if __name__ == '__main__':
     app.run(debug=True)
 
+
+# Custom error handlers for specific exceptions in the application
 @app.errorhandler(ValidationError)
 def invalid_request(err):
     return {'error': vars(err)['messages']}, 400

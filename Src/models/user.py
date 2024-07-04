@@ -6,6 +6,7 @@ from marshmallow import fields
 from typing import Optional, List
 from init import db, ma
 
+# Establishes the User models
 class User(db.Model):
     __tablename__ = 'users'
 
@@ -18,6 +19,7 @@ class User(db.Model):
     last_name: Mapped[str] = mapped_column(String(100))
     is_admin: Mapped[bool] = mapped_column(Boolean, default=False)
 
+    # Relationships with other tables
     comment = db.relationship('Comment', back_populates='user')
     auction = db.relationship('Auction', back_populates='user')
     bid = db.relationship('Bid', back_populates='user')
@@ -25,7 +27,7 @@ class User(db.Model):
     personal_collections = db.relationship('PersonalCollection', back_populates='user')
 
 class UserSchema(ma.Schema):
-
+    # Validation for user inputs
     email = fields.Email()
     password = fields.String(validate=Length(min=10, error='Password must be at least 10 characters'))
     username = fields.String(validate=And(
@@ -34,5 +36,6 @@ class UserSchema(ma.Schema):
     ))
     is_admin = fields.Boolean(default=False)
 
+    # Defines the fields to be displayed in API endpoints
     class Meta:
         fields = ('id', 'username', 'email', 'password', 'first_name', 'last_name', 'is_admin')
