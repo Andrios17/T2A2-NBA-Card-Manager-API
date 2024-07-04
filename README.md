@@ -2,11 +2,11 @@
 
 ## R1 - The problem this app will solve and how it will does this
 
-Sport card collecting, specifically NBA cards, is a very popular hobby within Australia. The hobby broke out into the mainstream during the pandemic where thousands of individuals began to collect and sell various kinds of NBA cards. During this time, listings for cards on auction applications such as EBay and Facebook Marketplace increased by 300%. However, despite this, physical store locations which specalise in sport card collecting have rapidly closed. In Sydney alone, there is no specific physcial store front which sells and is committed to purely sport card sales. This lack of a gathering place has hindered the hobbys growth within Australia as there is no place for individuals who are in invested in this hobby to meet and grow the community to levels it is at in other parts of the world such as America. This can be examplified in the fact that in Australia, over 60% of the individuals who were exposed to the hobby during its heightened popularity in the pandemic have since stepped away.Currently, individuals invested in the hobby must rely on social media applications such as Facebook, Ebay and Instagram to both discuss and potentially sell/trade cards in their collection. This can become a hinderence as from personal experience, managing different lines of communication on multiple different applications can become exhausting, especially for individuals who are looking for specific rare cards. This inconvenience may have attibuted to lesser individuals being invested in the hobby.
+Sport card collecting, specifically NBA cards, is a very popular hobby within Australia. The hobby broke out into the mainstream during the pandemic, where thousands of individuals began to collect and sell various kinds of NBA cards. During this time, listings for cards on auction applications such as EBay and Facebook Marketplace increased by 300%. However, despite this, physical store locations which specalise in sport card collecting have rapidly closed. In Sydney alone, there is no specific physcial store front which sells and is committed to purely sport card sales. This lack of a physical presence has hindered the hobbys growth within Australia as there is no place for individuals who are in invested in this hobby to meet and grow the community to levels it is at in other parts of the world such as America. This can be examplified in the fact that in Australia, over 60% of the individuals who were exposed to the hobby during its heightened popularity in the pandemic have since stepped away. Currently, individuals invested in the hobby must rely on social media applications such as Facebook, Ebay and Instagram to both discuss and potentially sell/trade cards in their collection. This can become a hinderence as from personal experience, managing different lines of communication on multiple different applications can become exhausting, especially for individuals who are looking for specific rare cards. This inconvenience may have attibuted to lesser individuals being invested in the hobby.
 
-The solution to this is a centralised application which solely designed to serve the various needs of individuals who are invested in NBA card hobby. This API serves as the foundation for this application and provides individuals with a multitude of features to both grow the NBA card collecting communitiy, but also to simplify trading/selling practices within the hobby. It does this by providing three main features. This includes a blogging feature, a feature to display all current cards in an individuals collection, as well as the building blocks to a fully fledged auction house where users can both place their cards on auction and other users can place bids. These features reflect the three core pillars of the card collecting hobby. Having these abilities in a centralised application will propel the hobbies growth in areas where physical meeting is limited and ultimately provide convience to all individuals who are both seasoned card collectors as well as individuals looking to enter the hobby for the first time.
+The solution to this is a centralised application which solely designed to serve the various needs of individuals who are invested in NBA card hobby. This API serves as the foundation for this application and provides individuals with a multitude of features to both grow the NBA card collecting communitiy, but to also simplify trading/selling practices within the hobby. It does this by providing three main features. This includes a blogging feature, a feature to display all current cards in an individuals collection, as well as the building blocks to a fully fledged auction house where users can both place their cards on auction and other users can place bids. These features reflect the three core pillars of the card collecting hobby. Having these abilities in a centralised application will propel the hobbies growth in areas where physical meeting is limited as over 80% of card sales ultimately take place online. This application has the ability to provide the ultimate convenience to all individuals who are both seasoned card collectors as well as individuals looking to enter the hobby for the first time.
 
-__PLEASE NOTE: Due to time constraints and complexity, Auctions and Bids are not fully functional as this would require me to implement fully fledged e-commerce capabilities. However, in time this API could be used as a well thought out base to build upon and add this functionality. Furthermore, there is no single source to accurately add every single NBA card in existence to the database. In order to complete this, web scrapping would need to take place and at this current stage in my development journey, I found this process to be outside of my capabilities. It is the hope that with time I can come back and add these two features in a fully functional full srack web application.__
+#### __PLEASE NOTE: Due to time constraints and complexity, Auctions and Bids are not fully functional as this would require me to implement fully fledged e-commerce capabilities. However, in time this API could be used as a well thought out base to build upon and add this functionality. Furthermore, there is no single source to accurately add every single NBA card in existence to the database. In order to complete this, web scrapping would need to take place and at this current stage in my development journey, I found this process to be outside of my capabilities. It is the hope that with time I can come back and add these two features in a fully functional full srack web application.__
 
 ## R2 - Allocation and Management of Tasks
 
@@ -40,7 +40,7 @@ __July 4 2024__
 
 ![Trello](docs/Trello_4.png)
 
-As you can see from the screenshots of the boards progression throughout the life span of the development cycle of the project, There were 3 main lists which were apart of the Trello board, these being the ToDo list, Backlog and Completed. In the initial stages of the project, there were clear markings  on each task which denoted when I aimed to have each task completed. However, this project has been completed by utilisation of an extension as I have been quite ill over the past couple of weeks. This sickness has affected my ability to plan properly within the Trello board and as such, as the project progressed, I opted to not put dates on tasks as most things would have ended up in the backlog section due to me not being able to plan when I would be well enough to complete the tasks.
+As you can see from the screenshots of the boards progression throughout the life span of the development cycle of the project, There were 3 main lists which were apart of the Trello board, these being the ToDo list, Backlog and Completed. In the initial stages of the project, there were clear markings  on each task which displayed when I aimed to have each task completed. However, this project has been completed by utilisation of an extension as I have been quite ill over the past couple of weeks. This sickness has affected my ability to plan properly within the Trello board and as such, as the project progressed, I opted to not put dates on tasks as most things would have ended up in the backlog section due to me not being able to plan when I would be well enough to complete the tasks.
 
 However, I found that this system worked quite well for me as I was able to visualise each task which needed to be completed. On top of this Trello board, I also completed standups on days the project was being worked on and screenshots of this can be found below:
 
@@ -150,7 +150,7 @@ By utilising this syntax, any model which has been imported into the file where 
 
 The ```db.drop_all()``` method will delete all tables from the database which is connected to the Flask app. While the ```db.create_all()``` method will create all tables based on the imported model class connected to the file where this method is being executed.
 
- Again the purpose of this is to create ease to the developer as well as build upon the ability to create model classes, as this feature would be essentially useless if a developer was not able to actually create the table from the model which has been designed
+ Again the purpose of this is to create ease to the developer, as well as build upon the ability to create model classes, as this feature would be essentially useless if a developer was not able to actually create the table from the model which has been designed.
 
  #### Creation of rows/instances
 
@@ -267,7 +267,7 @@ All tables now conform to the third normal form of data normalisation. All entit
 
 Following this practice removes the need for dependencies on data sanisation and interpretation as queries can be utilised to effectively view all data associated with the personal collections table, thus the creation of an effective and effcient database can be implemented.
 
-## R7 - Description of the implementws modwls and their relationships, including how the relationships aid the database implementation
+## R7 - Description of the implemented models and their relationships, including how the relationships aid the database implementation
 
 ### User Model
 
@@ -424,11 +424,11 @@ __Error__:
 
 ![Get all users error](docs/GetalluserE.png)
 
-### Get a specific user
+### Get a specific user information
 
 __Verb__: GET
 
-__Path__: /users/<int: id>
+__Path__: /users/<int: user_id>
 
 __Header__: Valid JWT belonging to a user with admin privledges
 
@@ -450,7 +450,7 @@ __Error__:
 
 __Verb__: PATCH, PUT
 
-__Path__: /users/<int: id>
+__Path__: /users/<int: user_id>
 
 __Header__: Valid JWT belonging to a user with admin privledges
 
@@ -474,7 +474,7 @@ __Error__:
 
 __Verb__: Delete
 
-__Path__: /users/<int: id>
+__Path__: /users/<int: user_id>
 
 __Header__: Valid JWT belonging to a user with admin privledges
 
@@ -548,7 +548,7 @@ __Error__:
 
 __Verb__: POST
 
-__Path__: /posts/comments/<int: id>
+__Path__: /posts/comments/<int: post_id>
 
 __Header__: Valid JWT belonging to a user
 
@@ -590,7 +590,7 @@ __Success__:
 
 __Verb__: GET
 
-__Path__: /posts/<int: id>
+__Path__: /posts/<int: post_id>
 
 __Header__: N/A
 
@@ -611,7 +611,7 @@ __Error__:
 
 __Verb__: PUT, PATCH
 
-__Path__: /posts/<int: id>
+__Path__: /posts/<int: post_id>
 
 __Header__: JWT associated with the original user who created the post or an administrator
 
@@ -767,7 +767,7 @@ __Error__
 
 __Verb__: PUT, PATCH
 
-__Path__: /posts/cards/<int: id>
+__Path__: /posts/cards/<int: card_id>
 
 __Header__: JWT with a user who has admin privledges
 
@@ -790,7 +790,7 @@ __Error__:
 
 __Verb__: DELETE
 
-__Path__: /posts/cards/<int: id>
+__Path__: /posts/cards/<int: card_id>
 
 __Header__: JWT with a user who has admin privledges
 
@@ -838,7 +838,7 @@ __Error__:
 
 __Verb__: GET
 
-__Path__: /personal_collection/<int: id>
+__Path__: /personal_collection/<int: user_id>
 
 __Header__: JWT of a valid user
 
@@ -887,7 +887,7 @@ __Error__:
 
 __Verb__: DELETE
 
-__Path__: /personal_collection/<int:id>
+__Path__: /personal_collection/<int: user_id>
 
 __Header__: JWT matching the identity of the owner of the pc referenced or an admin
 
@@ -1022,7 +1022,7 @@ __Error__:
 
 __Verb__: PUT,PATCH
 
-__Path__: /auction/<int: id>
+__Path__: /auction/<int: auction_id>
 
 __Header__: Valid JWT of a registered user that is the owner of the auction
 
@@ -1046,7 +1046,7 @@ __Error__:
 
 __Verb__: PUT,PATCH
 
-__Path__: /auction/bid/<int: id>
+__Path__: /auction/bid/<int: bid_id>
 
 __Header__: Valid JWT of a registered user that is the owner of the bid
 
@@ -1070,7 +1070,7 @@ __Error__:
 
 __Verb__: DELETE
 
-__Path__: /auction/<int: id>
+__Path__: /auction/<int: auction_id>
 
 __Header__: Valid JWT of a registered user that is the owner of the auction
 

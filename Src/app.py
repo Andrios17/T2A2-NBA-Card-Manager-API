@@ -56,7 +56,6 @@ def invalid_token(err):
 def expired_token(err):
     return {"error": "Token has expired. Please log in again"}, 401
 
-
 @jwt.unauthorized_loader
 def missing_token(err):
     return {"error": "Please ensure you are logged in so you are able to access this route"}, 401
