@@ -17,8 +17,8 @@ def db_create():
     db.create_all()
     print('Created all tables')
 
-@db_commands.cli.command('seed_users')
-def seed_users():
+@db_commands.cli.command('seed_tables')
+def seed_tables():
     users = [
         User(
             username='Administrator',
@@ -42,15 +42,13 @@ def seed_users():
     db.session.commit()
     print('Seeded Users')
 
-@db_commands.cli.command('seed_cards')
-def seed_cards():
     cards = [
         Card(
             first_name='Jalen',
             last_name='Brunson',
             team_name='New York Knicks',
             position='PG',
-            set='Panini Prizm 2023-24',
+            set='Panini Prizm',
             year=2023
         ),
         Card(
@@ -58,8 +56,72 @@ def seed_cards():
             last_name='James',
             team_name='Los Angleas Lakers',
             position='SF',
-            set='Panini Prizm 2023-24',
+            set='Panini Prizm',
             year=2023
+        ),
+        Card(
+            first_name='Klay',
+            last_name='Thompson',
+            team_name='Golden State Warriors',
+            position='SG',
+            set='Panini Prizm',
+            year=2023
+        ),
+        Card(
+            first_name='Stephen',
+            last_name='Curry',
+            team_name='Golden State Warriors',
+            position='PG',
+            set='Panini Prizm',
+            year=2011
+        ),
+        Card(
+            first_name='Kevin',
+            last_name='Durant',
+            team_name='Oklahoma City Thunder',
+            position='SF',
+            set='National Treasures',
+            year=2018
+        ),
+        Card(
+            first_name='Michael',
+            last_name='Jordan',
+            team_name='Chicago Bulls',
+            position='SG',
+            set='Fleer',
+            year=1984
+        ),
+        Card(
+            first_name='Kobe',
+            last_name='Bryant',
+            team_name='Los Angeles Lakers',
+            position='SG',
+            set='National Treasures',
+            year=2016
+        ),
+        Card(
+            first_name='LeBron',
+            last_name='James',
+            team_name='Cleveland Cavaliers',
+            position='SF',
+            set='National Treasures',
+            year=2003
+        ),
+        Card(
+            first_name='Julius',
+            last_name='Randle',
+            team_name='New York Knicks',
+            position='PF',
+            set='Panini Prizm',
+            year=2020
+        ),
+        Card(
+            first_name='Larry',
+            last_name='Bird',
+            team_name='Boston Celtics',
+            position='SF',
+            set='Fleer',
+            year=1982
         )
     ]
 
@@ -67,8 +129,7 @@ def seed_cards():
     db.session.commit()
     print('Seeded Cards')
 
-@db_commands.cli.command('seed_posts')
-def seed_posts():
+
     posts = [
         Post(
             title='First Post',
@@ -88,8 +149,6 @@ def seed_posts():
     db.session.commit()
     print('Seeded Posts')
 
-@db_commands.cli.command('seed_comments')
-def seed_comments():
     comments = [
         Comment(
         message='This is a comment',
@@ -109,8 +168,6 @@ def seed_comments():
     db.session.commit()
     print('Seeded Comments')
 
-@db_commands.cli.command('seed_personal_collections')
-def seed_personal_collections():
     pcs = [
         PersonalCollection(
             card_id=1,
@@ -126,8 +183,6 @@ def seed_personal_collections():
     db.session.commit()
     print('Seeded Personal Collections')
 
-@db_commands.cli.command('seed_auctions')
-def seed_auctions():
     auctions = [
         Auction(
             start_date=date.today(),
@@ -149,8 +204,6 @@ def seed_auctions():
     db.session.commit()
     print('Seeded Auctions')
 
-@db_commands.cli.command('seed_bids')
-def seed_bids():
     bids = [
         Bid(
             price=200,
